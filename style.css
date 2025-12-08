@@ -1,62 +1,154 @@
-.logo {
-    display: flex; /* Logoyu ve yazıyı yan yana getirir. */
-    align-items: center; /* Dikeyde ortalar. */
-    gap: 10px; /* iki eleman arasına boşluk koyar */
-    cursor: pointer; /* üzerine gelince el simgesi çıkartır. */
-}
-
-.logo img {
-    height: 50px; /* resmin boyutu */
-    width: auto;
-}
-
-.logo span {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: rgb(59, 38, 7);
-    letter-spacing: 1px;
-}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap');
 
 :root {
-
-    --primary-color: #22254b;
-    --secondary-color: #373b69;
-    --text-color: #ffffff;
+  --primary-color: #2b2b2b;       /* Koyu Arka Plan */
+  --secondary-color: #8d6e63;     /* Buton Rengi */
+  --card-bg: #3e2723;             /* Kart Rengi (Koyu Kahve) */
+  --text-color: #eceff1;          /* Yazı Rengi */
+  --accent-color: #ffc107;        /* Puan Rengi (Altın) */
 }
 
-*{
-    box-sizing: border-box; /* kutuların boyutunun bozulmaması için */
+body {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
 }
 
-body { 
-    background-color: var(--primary-color);
-    color: var(--text-color);
-    font-family: sans-serif;
-    margin: 0;
+header {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between; /* Sağa ve sola yasla */
+  align-items: center;
+  background-color: rgba(0,0,0,0.5); /* Şeffaf siyah bar */
 }
 
-header { 
-    background-color: var(--secondary-color);
-    padding: 1rem;
+/* LOGO VE ARAMA KUTUSU DÜZENİ */
+.logo {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+.logo img {
+    height: 40px; /* Logo boyutu */
 }
 
-.search {
+.search-btn {
     background-color: transparent;
-    border: 2px solid var(--primary-color);
-    border-radius: 50px;
-    padding: 0.5rem 1rem;
+    border: none;
     color: white;
-    font-size: 1rem;
-    outline: none;
+    cursor: pointer;
 }
 
-.search:focus {
-    background-color: var(--primary-color);
+#search {
+  background-color: transparent;
+  border: 2px solid var(--secondary-color);
+  border-radius: 50px;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
 }
 
-.search::placeholder {
-    color: #7378c5;
+#search::placeholder {
+  color: #bbb;
+}
+
+/* --- KRİTİK KISIM: IZGARA YAPISI (GRID) --- */
+/* Burası filmleri yan yana dizer */
+#main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Ortala */
+  padding: 20px;
+}
+
+/* FİLM KARTI TASARIMI */
+.movie-card {
+  width: 250px; /* İŞTE BU SATIR KOCAMAN RESİMLERİ KÜÇÜLTÜR */
+  margin: 1rem;
+  background-color: var(--card-bg); /* Kart rengi */
+  box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+  border-radius: 8px; /* Köşeleri yuvarla */
+  position: relative;
+  overflow: hidden; /* Taşmaları gizle */
+  transition: transform 0.3s ease; /* Hareket efekti */
+}
+
+.movie-card:hover {
+    transform: translateY(-10px); /* Üzerine gelince yukarı kalksın */
+    box-shadow: 0 0 20px var(--secondary-color);
+}
+
+/* RESİMLERİN KARTIN İÇİNE SIĞMASI İÇİN */
+.movie-card img {
+  width: 100%; /* Kartın genişliği neyse resim de o kadar olsun */
+  height: 380px; /* Standart yükseklik */
+  object-fit: cover; /* Resmi bozmadan doldur */
+}
+
+/* FİLM BİLGİLERİ (BAŞLIK VE PUAN) */
+.movie-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.movie-info h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.movie-info span {
+  background-color: var(--primary-color);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+/* PUAN RENKLERİ */
+.green { color: lightgreen; }
+.orange { color: orange; }
+.red { color: red; }
+
+/* ÖZET KISMI (HOVER İLE ÇIKAN YAZI) - BONUS */
+.overview {
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #000;
+  padding: 2rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  max-height: 100%;
+  transform: translateY(101%); /* Başlangıçta gizli (aşağıda) */
+  transition: transform 0.3s ease-in;
+  overflow-y: auto; /* Yazı uzunsa kaydırma çubuğu çıksın */
+}
+
+.movie-card:hover .overview {
+  transform: translateY(0); /* Üzerine gelince yukarı kaysın */
+}
+
+.symbols {
+  font-family: 'Material Symbols Outlined'; /* Google Fontları ile eşleşir */
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* İkon boyutu */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  vertical-align: middle; /* Yazıyla hizala */
+}
+
+/* Buton içindeki ikonların yerleşimi */
+.search-btn, .favs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
 }
