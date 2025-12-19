@@ -516,3 +516,20 @@ document.getElementById('scrollToTop').addEventListener('click', () => {
         behavior: 'smooth'
     });
 });
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault(); // Sayfanın yenilenmesini engelle
+
+    const arananKelime = search.value; // Kutudaki yazıyı al
+
+    // --- EN BASİT DOĞRULAMA ---
+    // Eğer yazı yoksa veya sadece boşluksa
+    if (arananKelime.trim() === "") {
+        alert("Lütfen bir film ismi giriniz!"); // Ekrana uyarı fırlat
+        return; // Kodu burada bitir, aşağı inip API'yi çağırma
+    }
+    // -------------------------
+
+    // Buradan sonrası senin normal kodun
+    getMovies(SEARCH_API + arananKelime);
+});
