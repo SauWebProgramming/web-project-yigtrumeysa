@@ -31,6 +31,9 @@ async function getMovies(url) {
 async function showMovies(movies) {
     main.innerHTML = '';
 
+    currentPage = 1; // Sayfayı sıfırla - EKLE
+    isLoading = false; // EKLE
+
     if (movies.length === 0) {
         main.innerHTML = '<p class="no-results">Aramanızla eşleşen film/dizi bulunamadı.</p>';
         return;
@@ -106,8 +109,12 @@ form.addEventListener('submit', (e) => {
     const searchTerm = search.value;
 
     if (searchTerm && searchTerm !== '') {
+        currentSearchTerm = searchTerm; // EKLE - Aramayı kaydet
+        currentFilterUrl = ''; // EKLE - Filtreyi temizle
         getMovies(SEARCH_API + searchTerm);
     } else {
+        currentSearchTerm = ''; // EKLE
+        currentFilterUrl = ''; // EKLE
         window.location.reload();
     }
 });
@@ -398,5 +405,114 @@ function applyFilters() {
         filterUrl += `&primary_release_year=${selectedYear}`;
     }
     
+    currentFilterUrl = filterUrl; // EKLE - Filtreyi kaydet
+    currentSearchTerm = ''; // EKLE - Aramayı temizle
     getMovies(filterUrl);
 }
+
+// INFINITE SCROLL (SONSUZ KAYDIRMA)
+let currentPage = 1;
+let isLoading = false;
+let currentSearchTerm = '';
+let currentFilterUrl = '';
+
+// Sayfa kaydırma olayını dinle
+window.addEventListener('scroll', () => {
+    // Sayfanın sonuna yaklaşıldı mı?
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !isLoading) {
+        loadMoreMovies();
+    }
+    
+    // Scroll to top butonu göster/gizle
+    const scrollBtn = document.getElementById('scrollToTop');
+    if (window.scrollY > 300) {
+        scrollBtn.classList.add('show');
+    } else {
+        scrollBtn.classList.remove('show');
+    }
+});
+
+// Daha fazla film yükle
+async function loadMoreMovies() {
+    if (isLoading) return;
+    
+    isLoading = true;
+    currentPage++;
+    
+    let loadUrl = '';
+    
+    if (currentSearchTerm) {
+        // Arama yapılmışsa
+        loadUrl = `${SEARCH_API}${currentSearchTerm}&page=${currentPage}`;
+    } else if (currentFilterUrl) {
+        // Filtre uygulanmışsa
+        loadUrl = `${currentFilterUrl}&page=${currentPage}`;
+    } else {
+        // Normal popüler filmler
+        loadUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=tr-TR&page=${currentPage}`;
+    }
+    
+    try {
+        const res = await fetch(loadUrl);
+        const data = await res.json();
+        
+        // Yeni filmleri mevcut listeye EKLE (değiştirme)
+        appendMovies(data.results);
+        
+        isLoading = false;
+    } catch (error) {
+        console.error("Daha fazla film yüklenirken hata:", error);
+        isLoading = false;
+    }
+}
+
+// Filmleri mevcut listeye ekle (showMovies'ın kopyası ama innerHTML = '' yok)
+function appendMovies(movies) {
+    movies.forEach((movie) => {
+        const { title, poster_path, vote_average, overview, id } = movie;
+
+        const movieEl = document.createElement('div');
+        movieEl.classList.add('movie-card');
+
+        movieEl.innerHTML = `
+            <img src="${IMG_PATH + poster_path}" alt="${title}">
+            <div class="fav-icon ${isFavorite(id) ? 'active' : ''}" data-id="${id}">
+                <span class="symbols">favorite</span>
+            </div>
+            <div class="movie-info">
+                <h3>${title}</h3>
+                <div class="rating-container">
+                    <span class="imdb-badge">IMDb</span>
+                    <span class="${getClassByRate(vote_average)}">${vote_average.toFixed(1)}</span>
+                </div>
+            </div>
+            <div class="overview">
+                <h3>Özet</h3>
+                ${overview}
+            </div>
+        `;
+        
+        main.appendChild(movieEl);
+        
+        movieEl.addEventListener('click', (e) => {
+            if (!e.target.closest('.fav-icon')) {
+                getMovieDetails(id);
+            }
+        });
+        
+        const favIcon = movieEl.querySelector('.fav-icon');
+        favIcon.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleFavorite(movie);
+            favIcon.classList.toggle('active');
+        });
+    });
+}
+
+// SCROLL TO TOP BUTONU
+document.getElementById('scrollToTop').addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
