@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;700&display=swap');
 
 :root {
-  --primary-color: #2b2b2b;       /* Koyu Arka Plan */
-  --secondary-color: #8d6e63;     /* Buton Rengi */
-  --card-bg: #3e2723;             /* Kart Rengi (Koyu Kahve) */
-  --text-color: #eceff1;          /* Yazı Rengi */
-  --accent-color: #ffc107;        /* Puan Rengi (Altın) */
+  --primary-color: #2b2b2b;       
+  --secondary-color: #8d6e63;     
+  --card-bg: #3e2723;             
+  --text-color: #eceff1;          
+  --accent-color: #ffc107;       
 }
 
 body {
@@ -27,7 +27,6 @@ header {
     box-sizing: border-box;
 }
 
-/* LOGO VE ARAMA KUTUSU DÜZENİ */
 .logo {
    display: flex;
     align-items: center;
@@ -53,7 +52,7 @@ header {
     border: 2px solid var(--secondary-color);
     border-radius: 50px;
     color: #fff;
-    padding: 0.5rem 3rem 0.5rem 1rem; /* Sağdan boşluk bırak (buton için) */
+    padding: 0.5rem 3rem 0.5rem 1rem; 
     font-size: 1rem;
     font-family: inherit;
     width: 100%;
@@ -65,10 +64,10 @@ header {
     color: white;
     cursor: pointer;
     position: absolute;
-    right: 20px; /* Kutunun içinde sağ tarafta */
+    right: 20px; 
     display: flex;
     align-items: center;
-    pointer-events: none; /* BUNU EKLE - Butonun tıklanmasını engellemez ama yazının altına gitmesini engeller */
+    z-index: 10;
 }
 
 .user-actions {
@@ -140,7 +139,7 @@ header {
 }
 
 .favorites-modal.active {
-    display: block;
+    display: flex;
 }
 
 .favorites-content {
@@ -193,40 +192,36 @@ header {
   color: #bbb;
 }
 
-/* --- KRİTİK KISIM: IZGARA YAPISI (GRID) --- */
-/* Burası filmleri yan yana dizer */
 #main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; /* Ortala */
+  justify-content: center; 
   padding: 20px;
 }
 
-/* FİLM KARTI TASARIMI */
 .movie-card {
-  width: 250px; /* İŞTE BU SATIR KOCAMAN RESİMLERİ KÜÇÜLTÜR */
+  width: 250px; 
   margin: 1rem;
-  background-color: var(--card-bg); /* Kart rengi */
+  background-color: var(--card-bg); 
   box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
-  border-radius: 8px; /* Köşeleri yuvarla */
+  border-radius: 8px; 
   position: relative;
-  overflow: hidden; /* Taşmaları gizle */
-  transition: transform 0.3s ease; /* Hareket efekti */
+  overflow: hidden; 
+  transition: transform 0.3s ease; 
 }
 
 .movie-card:hover {
-    transform: translateY(-10px); /* Üzerine gelince yukarı kalksın */
+    transform: translateY(-10px); 
     box-shadow: 0 0 20px var(--secondary-color);
 }
 
-/* RESİMLERİN KARTIN İÇİNE SIĞMASI İÇİN */
+
 .movie-card img {
-  width: 100%; /* Kartın genişliği neyse resim de o kadar olsun */
-  height: 380px; /* Standart yükseklik */
-  object-fit: cover; /* Resmi bozmadan doldur */
+  width: 100%; 
+  height: 380px; 
+  object-fit: cover; 
 }
 
-/* FİLM BİLGİLERİ (BAŞLIK VE PUAN) */
 .movie-info {
     display: flex;
     align-items: center;
@@ -264,12 +259,10 @@ header {
     font-size: 0.9rem;
 }
 
-/* PUAN RENKLERİ */
 .green { color: lightgreen; }
 .orange { color: orange; }
 .red { color: red; }
 
-/* ÖZET KISMI (HOVER İLE ÇIKAN YAZI) - BONUS */
 .overview {
   background-color: rgba(255, 255, 255, 0.9);
   color: #000;
@@ -279,17 +272,17 @@ header {
   bottom: 0;
   right: 0;
   max-height: 100%;
-  transform: translateY(101%); /* Başlangıçta gizli (aşağıda) */
+  transform: translateY(101%); 
   transition: transform 0.3s ease-in;
-  overflow-y: auto; /* Yazı uzunsa kaydırma çubuğu çıksın */
+  overflow-y: auto; 
 }
 
 .movie-card:hover .overview {
-  transform: translateY(0); /* Üzerine gelince yukarı kaysın */
+  transform: translateY(0); 
 }
 
 .symbols {
-  font-family: 'Material Symbols Outlined'; /* Google Fontları ile eşleşir */
+  font-family: 'Material Symbols Outlined'; 
   font-weight: normal;
   font-style: normal;
   font-size: 24px;  /* İkon boyutu */
@@ -491,14 +484,14 @@ header {
 }
 
 * {
-    box-sizing: border-box; /* Padding ekleyince genişliğin artmasını engeller */
+    box-sizing: border-box; 
 }
 
 html, body {
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Sağa taşan her şeyi gizle (En kritik kod bu) */
+    overflow-x: hidden; 
 }
 
 /* Filtre Modal */
@@ -652,7 +645,7 @@ section {
 /* Tablet (768px ve altı) */
 @media screen and (max-width: 768px) {
     header {
-               grid-template-columns: 1fr; /* Tek sütun yap */
+               grid-template-columns: 1fr; 
         gap: 1rem;
         padding: 1rem 0.5rem;
     }
@@ -674,23 +667,23 @@ section {
     #search {
         font-size: 0.9rem;
         padding: 0.4rem 2.5rem 0.4rem 1rem;
-        width: 100%; /* EKLE */
+        width: 100%; 
     }
     
     .user-actions {
         justify-content: center;
         flex-wrap: wrap;
-        gap: 0.5rem; /* EKLE - Butonlar arası boşluk */
-        width: 100%; /* EKLE */
+        gap: 0.5rem; 
+        width: 100%; 
     }
     
     .filter-btn,
     .favs {
         font-size: 0.9rem;
         padding: 0.4rem 0.8rem;
-        flex: 1; /* EKLE - Eşit genişlik */
-        min-width: 140px; /* EKLE - Minimum genişlik */
-        justify-content: center; /* EKLE - İçeriği ortala */
+        flex: 1; 
+        min-width: 140px; 
+        justify-content: center; 
     }
     
     /* Film kartları */
@@ -779,7 +772,6 @@ section {
         font-size: 20px;
     }
     
-    /* Film kartları daha küçük */
     .movie-card {
         width: 150px;
         margin: 0.3rem;
@@ -817,7 +809,6 @@ section {
         font-size: 20px;
     }
     
-    /* Detay modal mobilde */
     .detail-content {
         padding: 0.8rem;
         margin: 0.5rem;
@@ -858,7 +849,6 @@ section {
         font-size: 0.7rem;
     }
     
-    /* Filtre modal mobilde */
     .filter-content {
         padding: 1rem;
         width: 95%;
@@ -920,11 +910,6 @@ section {
     }
 }
 
-Tamam! CSS animasyonlarını ekleyelim. CSS'in sonuna şunları ekle:
-css/* ============================================
-   CSS ANIMASYONLARI VE TRANSİTİONLAR
-   ============================================ */
-
 /* Sayfa yüklenirken fade-in animasyonu */
 @keyframes fadeIn {
     from {
@@ -963,11 +948,11 @@ css/* ============================================
 }
 
 .fav-icon.active {
-    animation: heartBeat 0.5s ease; /* Sadece favoriye eklendiğinde 1 kez */
+    animation: heartBeat 0.5s ease; 
 }
 
 .fav-icon:hover {
-    transform: scale(1.15); /* Sadece büyüt, devamlı animasyon yok */
+    transform: scale(1.15); 
     transition: transform 0.3s ease;
 }
 
@@ -1074,7 +1059,7 @@ css/* ============================================
     }
     100% { 
         transform: translateX(100%);
-        opacity: 0; /* EKLE - Sonunda kaybolsun */
+        opacity: 0; 
     }
 }
 
@@ -1093,7 +1078,7 @@ css/* ============================================
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
     animation: shine 1s ease;
-    opacity: 0; /* EKLE - Başlangıçta görünmez */
+    opacity: 0;
 }
 
 /* Hover'da tekrar parlasın */
@@ -1117,7 +1102,6 @@ button:active {
     animation: buttonPress 0.2s ease;
 }
 
-/* Skeleton loading animasyonu (opsiyonel) */
 @keyframes shimmer {
     0% { background-position: -1000px 0; }
     100% { background-position: 1000px 0; }

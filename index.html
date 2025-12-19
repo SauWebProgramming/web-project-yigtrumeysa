@@ -26,7 +26,7 @@
     </div>
 
     <form id="form">
-        <input type="text" id="search" placeholder="Film/dizi ara...">
+       <input type="text" id="search" placeholder="Film/dizi ara..." autocomplete="off" required>
         <button type="submit" class="search-btn">
             <span class="symbols">search</span>
         </button>
@@ -68,10 +68,6 @@
         </div>
     </div>
 </div>
-
-      <section>
-        <main id="main"></main>
-    </section>
    
     <div id="detailModal" class="detail-modal">
     <div class="detail-content">
@@ -83,6 +79,17 @@
 <button id="scrollToTop" class="scroll-to-top">
     <span class="symbols">arrow_upward</span>
 </button>
+
+<div id="favoritesModal" class="favorites-modal filter-modal"> <div class="filter-content favorites-content">
+        <h2>Favorilerim</h2>
+        <button class="favorites-close filter-close">&times;</button>
+        
+        <div id="favoritesList" class="favorites-grid">
+            </div>
+    </div>
+</div>
+
+<main id="main"></main>
 
 <script src="script.js"></script>
 

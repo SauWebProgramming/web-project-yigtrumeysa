@@ -31,20 +31,19 @@ async function getMovies(url) {
 async function showMovies(movies) {
     main.innerHTML = '';
 
-    currentPage = 1; // Sayfayı sıfırla - EKLE
-    isLoading = false; // EKLE
+    currentPage = 1; 
+    isLoading = false; 
 
     if (movies.length === 0) {
         main.innerHTML = '<p class="no-results">Aramanızla eşleşen film/dizi bulunamadı.</p>';
         return;
     }
 
-    // Her film için detaylı bilgi çek (Türkçe özet için)
     for (const movie of movies) {
         const { title, poster_path, vote_average, id } = movie;
         let overview = movie.overview;
 
-        // Eğer özet boşsa veya çok kısaysa İngilizce çek
+        
         if (!overview || overview.trim() === '') {
             try {
                 const detailRes = await fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`);
@@ -78,7 +77,6 @@ async function showMovies(movies) {
         
         main.appendChild(movieEl);
         
-        // Karta tıklayınca detay aç (kalp hariç)
         movieEl.addEventListener('click', (e) => {
             if (!e.target.closest('.fav-icon')) {
                 getMovieDetails(id);
@@ -101,23 +99,6 @@ function getClassByRate(vote) {
     else if (vote >= 5) return 'orange';
     else return 'red';
 }
-
-// ARAMA FONKSİYONU
-form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const searchTerm = search.value;
-
-    if (searchTerm && searchTerm !== '') {
-        currentSearchTerm = searchTerm; // EKLE - Aramayı kaydet
-        currentFilterUrl = ''; // EKLE - Filtreyi temizle
-        getMovies(SEARCH_API + searchTerm);
-    } else {
-        currentSearchTerm = ''; // EKLE
-        currentFilterUrl = ''; // EKLE
-        window.location.reload();
-    }
-});
 
 // FAVORİLER SİSTEMİ
 let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -389,7 +370,7 @@ document.getElementById('clearFilter').addEventListener('click', () => {
     selectedYear = '';
     yearSelect.value = '';
     document.querySelectorAll('.genre-option').forEach(el => el.classList.remove('active'));
-    getMovies(url); // Ana sayfaya dön
+    getMovies(url); 
     filterModal.classList.remove('active');
 });
 
@@ -405,8 +386,8 @@ function applyFilters() {
         filterUrl += `&primary_release_year=${selectedYear}`;
     }
     
-    currentFilterUrl = filterUrl; // EKLE - Filtreyi kaydet
-    currentSearchTerm = ''; // EKLE - Aramayı temizle
+    currentFilterUrl = filterUrl; 
+    currentSearchTerm = ''; 
     getMovies(filterUrl);
 }
 
@@ -416,14 +397,11 @@ let isLoading = false;
 let currentSearchTerm = '';
 let currentFilterUrl = '';
 
-// Sayfa kaydırma olayını dinle
 window.addEventListener('scroll', () => {
-    // Sayfanın sonuna yaklaşıldı mı?
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500 && !isLoading) {
         loadMoreMovies();
     }
     
-    // Scroll to top butonu göster/gizle
     const scrollBtn = document.getElementById('scrollToTop');
     if (window.scrollY > 300) {
         scrollBtn.classList.add('show');
@@ -442,13 +420,10 @@ async function loadMoreMovies() {
     let loadUrl = '';
     
     if (currentSearchTerm) {
-        // Arama yapılmışsa
         loadUrl = `${SEARCH_API}${currentSearchTerm}&page=${currentPage}`;
     } else if (currentFilterUrl) {
-        // Filtre uygulanmışsa
         loadUrl = `${currentFilterUrl}&page=${currentPage}`;
     } else {
-        // Normal popüler filmler
         loadUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=tr-TR&page=${currentPage}`;
     }
     
@@ -456,7 +431,6 @@ async function loadMoreMovies() {
         const res = await fetch(loadUrl);
         const data = await res.json();
         
-        // Yeni filmleri mevcut listeye EKLE (değiştirme)
         appendMovies(data.results);
         
         isLoading = false;
@@ -466,7 +440,6 @@ async function loadMoreMovies() {
     }
 }
 
-// Filmleri mevcut listeye ekle (showMovies'ın kopyası ama innerHTML = '' yok)
 function appendMovies(movies) {
     movies.forEach((movie) => {
         const { title, poster_path, vote_average, overview, id } = movie;
@@ -509,7 +482,6 @@ function appendMovies(movies) {
     });
 }
 
-// SCROLL TO TOP BUTONU
 document.getElementById('scrollToTop').addEventListener('click', () => {
     window.scrollTo({
         top: 0,
@@ -517,19 +489,21 @@ document.getElementById('scrollToTop').addEventListener('click', () => {
     });
 });
 
+// ARAMA VE DOĞRULAMA (VALIDATION) BÖLÜMÜ
 form.addEventListener('submit', (e) => {
-    e.preventDefault(); // Sayfanın yenilenmesini engelle
+    e.preventDefault(); 
 
-    const arananKelime = search.value; // Kutudaki yazıyı al
+    const searchTerm = search.value; 
 
-    // --- EN BASİT DOĞRULAMA ---
-    // Eğer yazı yoksa veya sadece boşluksa
-    if (arananKelime.trim() === "") {
-        alert("Lütfen bir film ismi giriniz!"); // Ekrana uyarı fırlat
-        return; // Kodu burada bitir, aşağı inip API'yi çağırma
+    if (searchTerm.trim() === "") {
+        alert("Lütfen bu alanı doldurun!"); 
+        search.value = ""; 
+        return; 
     }
-    // -------------------------
-
-    // Buradan sonrası senin normal kodun
-    getMovies(SEARCH_API + arananKelime);
+    
+    if (searchTerm) {
+        currentSearchTerm = searchTerm;
+        currentFilterUrl = ''; 
+        getMovies(SEARCH_API + searchTerm);
+    }
 });
