@@ -1102,17 +1102,6 @@ button:active {
     animation: buttonPress 0.2s ease;
 }
 
-@keyframes shimmer {
-    0% { background-position: -1000px 0; }
-    100% { background-position: 1000px 0; }
-}
-
-.loading {
-    background: linear-gradient(90deg, #3e2723 25%, #4e342e 50%, #3e2723 75%);
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite;
-}
-
 /* Scroll to Top Butonu */
 .scroll-to-top {
     position: fixed;

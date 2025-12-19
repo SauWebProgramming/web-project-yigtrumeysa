@@ -1,10 +1,10 @@
-// 1. Anahtarlar ve Adresler
+// Anahtarlar ve Adresler
 const apiKey = 'bb45bdabfec78b5f1714daa4b80ee3a4';
 const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=tr-TR`;
 const IMG_PATH = 'https://image.tmdb.org/t/p/w500';
 const SEARCH_API = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=`;
 
-// 2. HTML Elemanlarını Seçme
+// HTML Elemanlarını Seçme
 const main = document.getElementById('main'); 
 const form = document.getElementById('form');
 const search = document.getElementById('search');
@@ -13,7 +13,7 @@ if (!main) {
     console.error("HATA: HTML dosyasında id='main' olan etiketi bulamadım! HTML'i kontrol et.");
 }
 
-// 3. Verileri Çekme
+// Verileri Çekme
 getMovies(url);
 
 async function getMovies(url) {
@@ -366,12 +366,15 @@ document.getElementById('applyFilter').addEventListener('click', () => {
 
 // Filtreyi temizle
 document.getElementById('clearFilter').addEventListener('click', () => {
-    selectedGenre = null;
-    selectedYear = '';
+   
+    currentFilterUrl = ''; 
+    
+    document.querySelectorAll('.genre-option').forEach(e => e.classList.remove('active'));
+    
     yearSelect.value = '';
-    document.querySelectorAll('.genre-option').forEach(el => el.classList.remove('active'));
+    
     getMovies(url); 
-    filterModal.classList.remove('active');
+
 });
 
 // Filtreleri uygula
